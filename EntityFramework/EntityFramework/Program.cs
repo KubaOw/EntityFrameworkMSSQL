@@ -69,8 +69,18 @@ if (!users.Any())
 
         var userDetails = db.Users.First(u => u.Id == topAuthor.Key);
         return new { userDetails, commentCount = topAuthor.Count };
-    }
-);
+    });
+
+    app.MapPost("update", async (Context db) =>
+    {
+        Epic epic = await db.Epics.FirstAsync(epic => epic.Id == 1);
+
+        epic.Area = "Updated area";
+        epic.Priority = 1;
+        epic.StartDate = DateTime.Now;
+        await db.SaveChangesAsync();
+        return epic;
+    });
 }
 
 app.Run();
