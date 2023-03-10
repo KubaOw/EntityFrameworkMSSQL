@@ -56,6 +56,13 @@ if (!users.Any())
 
     dbContext.Users.AddRange(user1, user2);
     dbContext.SaveChanges();
+
+    app.MapGet("data", (Context db) =>
+    {
+        var tags = db.Tags.ToList();
+        return tags;
+    }
+);
 }
 
 app.Run();
