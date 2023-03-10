@@ -33,7 +33,7 @@ namespace EntityFramework.Entities
             {
                 eb.HasOne(wi => wi.State)
                 .WithMany()
-                .HasForeignKey(wi => wi.State);
+                .HasForeignKey(wi => wi.StateID);
                 
                 eb.Property(wi => wi.Area).HasColumnType("varchar(200)");
                 eb.Property(wi => wi.IterationPath).HasColumnName("Iteration_Path");
