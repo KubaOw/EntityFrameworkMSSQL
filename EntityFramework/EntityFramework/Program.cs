@@ -1,4 +1,4 @@
-using EntityFramework.Entities;
+﻿using EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +27,35 @@ var pendingMigrations = dbContext.Database.GetPendingMigrations();
 if (pendingMigrations.Any())
 {
     dbContext.Database.Migrate();
+}
+
+var users = dbContext.Users.ToList();
+if (!users.Any())
+{
+    var user1 = new User()
+    {
+        Email = "user1@.com",
+        FullName = "User One",
+        Adress = new Adress()
+        {
+            City = "Warszawa",
+            Street = "Szeroka"
+        }
+    };
+
+    var user2 = new User()
+    {
+        Email = "user2@.com",
+        FullName = "User Two",
+        Adress = new Adress()
+        {
+            City = "Kraków",
+            Street = "Dluga"
+        }
+    };
+
+    dbContext.Users.AddRange(user1, user2);
+    dbContext.SaveChanges();
 }
 
 app.Run();
