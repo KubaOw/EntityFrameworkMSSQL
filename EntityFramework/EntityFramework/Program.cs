@@ -74,10 +74,22 @@ if (!users.Any())
     app.MapPost("update", async (Context db) =>
     {
         Epic epic = await db.Epics.FirstAsync(epic => epic.Id == 1);
+        //three diffrent ways of update 
 
+        //epic.StateId = 1;//first way
+        /*
+        //second way
+        var onHoldState = await db.WorkItemStates.FirstAsync(wis => wis.Value == "On Hold");
+        epic.StateId = onHoldState.Id;
+        var rejectedState = await db.WorkItemStates.FirstAsync(wis => wis.Value == "Rejected");
+        epic.State = rejectedState;
+        */
+
+        /* 
+        //third way
         epic.Area = "Updated area";
         epic.Priority = 1;
-        epic.StartDate = DateTime.Now;
+        epic.StartDate= DateTime.Now;*/
         await db.SaveChangesAsync();
         return epic;
     });
