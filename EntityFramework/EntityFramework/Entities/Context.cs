@@ -13,6 +13,10 @@ namespace EntityFramework.Entities
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Adress> Adresses { get; set; }
+        public DbSet<WorkItemState> WorkItemStates { get; set; }
+        public DbSet<Epic> Epics { get; set; }
+        public DbSet<Issue> Issues { get; set; }
+        public DbSet<Task> Tasks { get; set; }
 
         /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,16 +24,21 @@ namespace EntityFramework.Entities
         }code provides composite key for User table*/
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<WorkItemState>()
+                .Property(wis => wis.Value)
+                .IsRequired()
+                .HasMaxLength(50);
+
             modelBuilder.Entity<WorkItem>(eb =>
             {
-                eb.Property(wi => wi.State).IsRequired();
+                eb.HasOne(wi => wi.State)
+                .WithMany()
+                .HasForeignKey(wi => wi.State);
+                
                 eb.Property(wi => wi.Area).HasColumnType("varchar(200)");
                 eb.Property(wi => wi.IterationPath).HasColumnName("Iteration_Path");
-                eb.Property(wi => wi.Efford).HasColumnType("decimal(5,1)");
-                eb.Property(wi => wi.EndDate).HasPrecision(3);
-                eb.Property(wi => wi.Activity).HasMaxLength(200);
-                eb.Property(wi => wi.RemainingWork).HasPrecision(14, 2);
                 eb.Property(wi => wi.Priority).HasDefaultValue(1);
+
                 eb.HasMany(wi => wi.Comments)
                 .WithOne(c => c.WorkItem)
                 .HasForeignKey(c => c.WorkItemId);
@@ -55,6 +64,12 @@ namespace EntityFramework.Entities
                         wit.Property(x => x.PublicationDate).HasDefaultValueSql("getutcdate()");
                     });
             });
+
+            modelBuilder.Entity<Epic>().Property(e => e.EndDate).HasPrecision(3);
+            modelBuilder.Entity<Task>().Property(t => t.Activity).HasMaxLength(200);
+            modelBuilder.Entity<Task>().Property(t => t.RemainingWork).HasPrecision(14,2);
+            modelBuilder.Entity<Issue>().Property(i => i.Efford).HasColumnType("decimal(5,1)");
+
             modelBuilder.Entity<Comment>(eb =>
             {
                 eb.Property(com => com.CreatedDate).HasDefaultValueSql("getutcdate()");
