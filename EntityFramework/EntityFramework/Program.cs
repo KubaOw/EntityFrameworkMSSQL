@@ -57,10 +57,18 @@ if (!users.Any())
     dbContext.Users.AddRange(user1, user2);
     dbContext.SaveChanges();
 
-    app.MapGet("data", (Context db) =>
+    app.MapGet("data", async (Context db) =>
     {
-        var tags = db.Tags.ToList();
-        return tags;
+        var authorsCommentCounts = await db.Comments
+        .GroupBy(c => c.AuthorId)
+        .Select(c => new { c.Key, Count = c.Count() }).
+        ToListAsync();
+
+        var topAuthor = authorsCommentCounts.
+        First(a => a.Count == authorsCommentCounts.Max(acc => acc.Count));
+
+        var userDetails = db.Users.First(u => u.Id == topAuthor.Key);
+        return new { userDetails, commentCount = topAuthor.Count };
     }
 );
 }
