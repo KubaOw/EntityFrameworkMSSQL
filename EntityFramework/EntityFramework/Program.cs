@@ -74,7 +74,7 @@ if (!users.Any())
     app.MapPost("update", async (Context db) =>
     {
         Epic epic = await db.Epics.FirstAsync(epic => epic.Id == 1);
-        //three diffrent ways of update 
+        //three different ways of update 
 
         //epic.StateId = 1;//first way
         /*
@@ -92,6 +92,32 @@ if (!users.Any())
         epic.StartDate= DateTime.Now;*/
         await db.SaveChangesAsync();
         return epic;
+    });
+
+    app.MapPost("create", async (Context db) =>
+    {
+        Tag tag = new Tag()
+        {
+            Value = "EF"
+        };
+
+        Tag mcv = new Tag()
+        {
+            Value = "MCV"
+        };
+
+        Tag asp = new Tag()
+        {
+            Value = "ASP"
+        };
+
+        var tags = new List<Tag> { mcv, asp };
+        //how to add one tag to table
+        //await db.AddAsync(tag);
+        //await db.Tags.AddAsync(tag);
+        await db.Tags.AddRangeAsync(tags);
+        await db.SaveChangesAsync();
+        return tags;
     });
 }
 
