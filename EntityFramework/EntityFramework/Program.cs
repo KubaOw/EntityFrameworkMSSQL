@@ -88,6 +88,18 @@ app.MapGet("GettingRelatedData", async (Context db) =>
     return user;
 });
 
+app.MapGet("GettingDataRawSQL", async (Context db) =>
+{
+    var minWorkItemsCount = "85";
+    var states = db.WorkItemStates.FromSqlInterpolated($@"
+    SELECT wis.Id, wis.Value
+    FROM WorkItemStates wis
+    JOIN WorkItems wi on wi.StateId = wis.Id
+    GROUP BY wis.Id, wis.Value
+    HAVING COUNT(*) > {minWorkItemsCount}").ToList();
+    return states;
+});
+
 app.MapPost("update", async (Context db) =>
 {
     Epic epic = await db.Epics.FirstAsync(epic => epic.Id == 1);
