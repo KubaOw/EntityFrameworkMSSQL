@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EntityFramework.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace EntityFramework.Entities
 {
@@ -18,6 +19,7 @@ namespace EntityFramework.Entities
         public DbSet<Issue> Issues { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<WorkItemTag> WorkItemTags { get; set; }
+        public DbSet<TopAuthors> ViewTopAuthors { get; set; }
 
         /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,7 +92,11 @@ namespace EntityFramework.Entities
                 .WithOne(a => a.User)
                 .HasForeignKey<Adress>(a => a.UserID);
 
-            
+            modelBuilder.Entity<TopAuthors>(eb =>
+            {
+                eb.ToView("View_TopAuthors");
+                eb.HasNoKey();
+            });
         }
     }
 }
