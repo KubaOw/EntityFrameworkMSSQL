@@ -17,6 +17,7 @@ namespace EntityFramework.Entities
         public DbSet<Epic> Epics { get; set; }
         public DbSet<Issue> Issues { get; set; }
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<WorkItemTag> WorkItemTag { get; set; }
 
         /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

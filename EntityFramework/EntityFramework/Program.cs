@@ -158,5 +158,26 @@ app.MapPost("AddRelatedData", async (Context db) =>
     return user;
 });
 
+app.MapPost("Delete", async (Context db) =>
+{
+    //two ways to delete data, first with no relations, second with relations with cascade delete
+    var workItemTags = await db.WorkItemTags.Where(wit => wit.WorkItemID == 12).ToListAsync();
+    db.WorkItemTags.RemoveRange(workItemTags);
+    await db.SaveChangesAsync();
+
+    var workItem = await db.WorkItems.FirstAsync(wi => wi.Id == 16);
+    db.RemoveRange(workItem);
+    await db.SaveChangesAsync();
+
+    //a way to delete data that has relations but no cascading delete
+    var user = await db.Users
+    .FirstAsync(u => u.Id == Guid.Parse("DC231ACF-AD3C-445D-CC08-08DA10AB0E61"));
+    var userComments = db.Comments.Where(c => c.AuthorId == user.Id).ToList();
+    db.RemoveRange(userComments);
+    await db.SaveChangesAsync();
+    db.Users.Remove(user);
+    await db.SaveChangesAsync();
+});
+
 app.Run();
 
