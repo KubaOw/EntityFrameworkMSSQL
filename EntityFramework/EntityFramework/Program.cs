@@ -190,5 +190,16 @@ app.MapPost("DeleteOnClient", async (Context db) =>
     await db.SaveChangesAsync();
 });
 
+app.MapPost("DeleteOchangeTracker", async (Context db) =>
+{
+    var workItem = new Epic()
+    {
+        Id = 2
+    };
+    var entry = db.Attach(workItem);
+    entry.State = EntityState.Deleted;
+    db.SaveChanges();
+});
+
 app.Run();
 
