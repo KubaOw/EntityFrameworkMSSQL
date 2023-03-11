@@ -179,5 +179,16 @@ app.MapPost("Delete", async (Context db) =>
     await db.SaveChangesAsync();
 });
 
+app.MapPost("DeleteOnClient", async (Context db) =>
+{
+    //by adding DeleteBehavior.ClientCascade in Context,Comments that are in relation with user1 will
+    //be automaticaly delete by EntityFramework on the client side
+    var user2 = await db.Users
+    .Include(u => u.Comments)
+    .FirstAsync(u => u.Id == Guid.Parse("DC231ACF-AD3C-445D-CC08-08DA10AB0E61"));
+    db.Users.Remove(user2);
+    await db.SaveChangesAsync();
+});
+
 app.Run();
 
