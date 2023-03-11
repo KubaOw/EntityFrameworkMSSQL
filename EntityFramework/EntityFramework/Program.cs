@@ -119,6 +119,27 @@ if (!users.Any())
         await db.SaveChangesAsync();
         return tags;
     });
+
+    app.MapPost("AddRelatedData", async (Context db) =>
+    {
+        var adress = new Adress()
+        {
+            Id = Guid.Parse("12ab34cd-56ef-11ef-22aa-abc1122abc21"),
+            City = "Kraków",
+            Country = "Poland",
+            Street = "D³uga"
+        };
+
+        var user = new User()
+        {
+            Email = "user@add.com",
+            FullName = "ADD USER",
+            Adress = adress,
+        };
+        db.Users.Add(user);
+        await db.SaveChangesAsync();
+        return user;
+    });
 }
 
 app.Run();
