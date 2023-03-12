@@ -10,6 +10,7 @@ namespace EntityFramework.Entities.Configurations
             builder.HasOne(u => u.Adress)
                  .WithOne(a => a.User)
                  .HasForeignKey<Adress>(a => a.UserID);
+            builder.HasIndex(u => new { u.Email, u.FullName });
         }
     }
 }
