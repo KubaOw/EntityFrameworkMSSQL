@@ -48,7 +48,7 @@ namespace EntityFramework.Migrations
                     b.HasIndex("UserID")
                         .IsUnique();
 
-                    b.ToTable("Adresses");
+                    b.ToTable("Adresses", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Entities.Comment", b =>
@@ -83,7 +83,7 @@ namespace EntityFramework.Migrations
 
                     b.HasIndex("WorkItemId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Entities.Tag", b =>
@@ -99,7 +99,7 @@ namespace EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Entities.User", b =>
@@ -116,7 +116,7 @@ namespace EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.Entities.WorkItem", b =>
@@ -155,7 +155,7 @@ namespace EntityFramework.Migrations
 
                     b.HasIndex("StateID");
 
-                    b.ToTable("WorkItems");
+                    b.ToTable("WorkItems", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("WorkItem");
 
@@ -177,7 +177,7 @@ namespace EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkItemStates");
+                    b.ToTable("WorkItemStates", (string)null);
 
                     b.HasData(
                         new
@@ -214,7 +214,7 @@ namespace EntityFramework.Migrations
 
                     b.HasIndex("WorkItemID");
 
-                    b.ToTable("WorkItemTags");
+                    b.ToTable("WorkItemTags", (string)null);
                 });
 
             modelBuilder.Entity("EntityFramework.ViewModels.TopAuthors", b =>
